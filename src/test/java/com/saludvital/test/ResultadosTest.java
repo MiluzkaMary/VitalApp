@@ -1,7 +1,10 @@
 package com.saludvital.test;
 
-import com.saludvital.model.Resultados;
+import com.saludvital.model.Doctor;
 import com.saludvital.model.Paciente;
+import com.saludvital.model.Resultados;
+import com.saludvital.repositories.DoctorRepository;
+import com.saludvital.repositories.PacienteRepository;
 import com.saludvital.repositories.ResultadosRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +21,27 @@ public class ResultadosTest {
     @Autowired
     private ResultadosRepository resultadosRepository;
 
+
+    @Autowired
+    private PacienteRepository pacienteRepository;
+
     @Test
     public void registrarTest() {
+        // Crear y guardar un paciente válido
+        Paciente paciente = new Paciente();
+        paciente.setNombre("Carlos");
+        paciente.setCorreo("carlos@email.com");
+        paciente.setTelefono("123456789");
+        paciente.setDireccion("Calle 123");
+        paciente = pacienteRepository.save(paciente);
+
+
+        // Crear y guardar un resultado
         Resultados resultado = new Resultados();
         resultado.setDescripcion("Resultado de prueba");
         resultado.setFechaEntrega(LocalDate.now());
-        resultado.setPaciente(new Paciente()); // Asignar un paciente válido
+        resultado.setPaciente(paciente); // Asignar el paciente creado
+
 
         Resultados resultadoCreado = resultadosRepository.save(resultado);
 
