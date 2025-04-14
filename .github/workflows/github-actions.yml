@@ -6,20 +6,25 @@ on:
   pull_request:
     branches: [main]
 
-
-
 jobs:
   build-test:
+    runs-on: ubuntu-latest
+
     services:
       mysql:
-        image: mysql:8
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: saludvitalpro
+          MYSQL_DATABASE: vitalapp
+          MYSQL_PASSWORD: saludvitalpro
         ports:
           - 3306:3306
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: saludvitalpro
-          
-    runs-on: ubuntu-latest
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
       - name: Checkout del código
         uses: actions/checkout@v3
@@ -29,6 +34,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+
+      - name: Esperar a que MySQL esté listo
+        run: sleep 20
 
       - name: Compilar y ejecutar pruebas con Maven
         run: mvn clean test
