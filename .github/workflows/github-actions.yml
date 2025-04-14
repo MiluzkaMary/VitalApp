@@ -23,8 +23,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-        ports:
-          - 3306:3306
 
     steps:
       - name: Checkout code
@@ -42,7 +40,7 @@ jobs:
       - name: Wait for MySQL to be ready
         run: |
           for i in {1..30}; do
-            if mysqladmin ping -h 127.0.0.1 --silent; then
+            if mysqladmin ping -h db --silent; then
               echo "MySQL is ready"
               break
             fi
@@ -52,7 +50,5 @@ jobs:
 
       - name: Run tests
         env:
-          SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/vitalapp
-          SPRING_DATASOURCE_USERNAME: custom_user
-          SPRING_DATASOURCE_PASSWORD: saludvitalpro
+          SPRING_PROFILES_ACTIVE: test
         run: mvn test
