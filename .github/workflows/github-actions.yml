@@ -36,10 +36,10 @@ jobs:
           java-version: '17'
 
       - name: Esperar a que MySQL esté listo
-        run: sleep 20
+        run: sleep 30
 
       - name: Compilar y ejecutar pruebas con Maven
-        run: mvn clean test
+        run: mvn clean test -X
 
   docker:
     needs: build-test
