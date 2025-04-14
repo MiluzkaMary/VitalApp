@@ -19,7 +19,7 @@ jobs:
           MYSQL_USER: custom_user
           MYSQL_PASSWORD: saludvitalpro
         options: >-
-          --health-cmd="mysqladmin ping -h localhost"
+          --health-cmd="mysqladmin ping -h localhost --silent"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -33,6 +33,17 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
+
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            if mysqladmin ping -h db --silent; then
+              echo "MySQL is ready"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 5
+          done
 
       - name: Run tests
         env:
