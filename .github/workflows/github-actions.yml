@@ -37,16 +37,24 @@ jobs:
       - name: Install MySQL client
         run: sudo apt-get update && sudo apt-get install -y mysql-client
 
-      - name: Wait for MySQL to be ready
+      - name: Wait for MySQL to accept custom_user connections
         run: |
           for i in {1..30}; do
-            if mysqladmin ping -h db --silent; then
-              echo "MySQL is ready"
+            echo "Intentando conexión real con custom_user..."
+            if mysql -h db -u custom_user -psaludvitalpro -e "USE vitalapp;" ; then
+              echo "✅ Conexión exitosa."
               break
             fi
-            echo "Waiting for MySQL..."
+            echo "❌ Aún sin acceso. Reintentando..."
             sleep 5
           done
+
+      - name: Debug profile y config
+        run: |
+          echo "SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE"
+          cat src/test/resources/application-test.properties
+        env:
+          SPRING_PROFILES_ACTIVE: test
 
       - name: Run tests
         env:
