@@ -1,11 +1,10 @@
 services:
   db:
-    image: mysql:8.0                  # Imagen oficial de MySQL
+    image: mysql:8.0 # Imagen oficial de MySQL
     container_name: mysql_vitalapp
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: vitalapp        # Se crea esta BD automáticamente
-      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: saludvitalpro
+      MYSQL_DATABASE: vitalapp # Se crea esta BD automáticamente
       MYSQL_PASSWORD: saludvitalpro
     ports:
       - "3306:3306"
@@ -16,11 +15,18 @@ services:
 
   app:
     build:
-      context: .                      # Construye desde el Dockerfile en este proyecto
+      context: . # Construye desde el Dockerfile en este proyecto
     container_name: vitalapp
     ports:
       - "8080:8080"
     depends_on:
-      - db                           # Espera a que la base de datos esté lista
+      - db # Espera a que la base de datos esté lista
     networks:
       - vitalapp_network
+
+volumes:
+  db_data:
+
+networks:
+  vitalapp_network:
+    driver: bridge

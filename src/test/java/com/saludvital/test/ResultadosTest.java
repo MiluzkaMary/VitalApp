@@ -1,6 +1,7 @@
 package com.saludvital.test;
 
 import com.saludvital.model.Resultados;
+import com.saludvital.model.Paciente;
 import com.saludvital.repositories.ResultadosRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
