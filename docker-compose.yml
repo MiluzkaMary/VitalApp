@@ -5,6 +5,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: saludvitalpro
       MYSQL_DATABASE: vitalapp # Se crea esta BD automáticamente
+      MYSQL_USER: custom_user
       MYSQL_PASSWORD: saludvitalpro
     ports:
       - "3306:3306"

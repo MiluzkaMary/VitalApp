@@ -23,6 +23,8 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+        ports:
+          - 3306:3306
 
     steps:
       - name: Checkout del código
@@ -34,18 +36,20 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Wait for MySQL to be ready
+      - name: Esperar a que MySQL esté listo
         run: |
-          for i in {1..10}; do
+          for i in {1..15}; do
             if mysqladmin ping -h 127.0.0.1 --silent; then
-              echo "MySQL is ready"
+              echo "MySQL está listo"
               break
             fi
-            echo "Waiting for MySQL..."
+            echo "Esperando a MySQL..."
             sleep 10
           done
 
       - name: Compilar y ejecutar pruebas con Maven
+        env:
+          SPRING_PROFILES_ACTIVE: test
         run: mvn clean test -X
 
   docker:
