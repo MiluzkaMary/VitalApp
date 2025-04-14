@@ -42,7 +42,7 @@ jobs:
         run: |
           for i in {1..30}; do
             echo "Intentando conexión real con custom_user..."
-            if mysql -h db -u custom_user -psaludvitalpro -e "USE vitalapp;" ; then
+            if mysql -h 127.0.0.1 -u custom_user -psaludvitalpro -e "USE vitalapp;" ; then
               echo "✅ Conexión exitosa."
               break
             fi
