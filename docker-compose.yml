@@ -17,7 +17,6 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - vitalapp_network
-
   app:
     build:
       context: . # Construye desde el Dockerfile en este proyecto
@@ -28,7 +27,6 @@ services:
       - db # Espera a que la base de datos esté lista
     networks:
       - vitalapp_network
-
 volumes:
   db_data:
 
