@@ -15,6 +15,9 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: saludvitalpro
+          MYSQL_DATABASE: vitalapp
+          MYSQL_USER: custom_user
+          MYSQL_PASSWORD: saludvitalpro
         options: >-
           --health-cmd="mysqladmin ping -h localhost --silent"
           --health-interval=10s
@@ -38,24 +41,23 @@ jobs:
       - name: Install MySQL client
         run: sudo apt-get update && sudo apt-get install -y mysql-client
 
-      - name: Wait for MySQL to accept custom_user connections
+      - name: Wait for MySQL to be ready
         run: |
           for i in {1..30}; do
-            echo "Intentando conexión real con custom_user..."
-            if mysql -h 127.0.0.1 -u custom_user -psaludvitalpro -e "USE vitalapp;" ; then
-              echo "✅ Conexión exitosa."
+            echo "Checking MySQL connection..."
+            if mysqladmin ping -h 127.0.0.1 --silent; then
+              echo "✅ MySQL is ready."
               break
             fi
-            echo "❌ Aún sin acceso. Reintentando..."
+            echo "❌ MySQL not ready. Retrying..."
             sleep 5
           done
 
-      - name: Debug profile y config
+      - name: Test database connection
         run: |
-          echo "SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE"
-          cat src/test/resources/application-test.properties
-        env:
-          SPRING_PROFILES_ACTIVE: test
+          echo "Testing connection to MySQL..."
+          mysql -h 127.0.0.1 -u custom_user -psaludvitalpro -e "CREATE DATABASE IF NOT EXISTS test_db; SHOW DATABASES; DROP DATABASE test_db;"
+          echo "✅ Connection successful."
 
       - name: Run tests
         env:
