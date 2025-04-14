@@ -16,14 +16,13 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: saludvitalpro
           MYSQL_DATABASE: vitalapp
-          MYSQL_PASSWORD: saludvitalpro
-        ports:
-          - 3306:3306
+          MYSQL_USER: custom_user
+          MYSQL_PASSWORD: custom_password
         options: >-
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
 
     steps:
       - name: Checkout del código
@@ -35,8 +34,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Esperar a que MySQL esté listo
-        run: sleep 30
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..10}; do
+            if mysqladmin ping -h 127.0.0.1 --silent; then
+              echo "MySQL is ready"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 10
+          done
 
       - name: Compilar y ejecutar pruebas con Maven
         run: mvn clean test -X
