@@ -6,7 +6,10 @@ RUN mvn dependency:go-offline
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Imagen final con la app empaquetada
+# Etapa 2: Ejecutar tests
+RUN mvn test
+
+# Etapa 3: Imagen final con la app empaquetada
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
