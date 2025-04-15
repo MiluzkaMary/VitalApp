@@ -1,15 +1,18 @@
+version: '3.8'
+
 services:
   db:
-    image: mysql:8.0 # Imagen oficial de MySQL
+    image: mysql:8.0
     container_name: mysql_vitalapp
     environment:
       MYSQL_ROOT_PASSWORD: saludvitalpro
-      MYSQL_DATABASE: vitalapp # Se crea esta BD automáticamente
+      MYSQL_DATABASE: vitalapp
+      MYSQL_USER: custom_user
       MYSQL_PASSWORD: saludvitalpro
     ports:
-      - "3306:3306"
+      - "3307:3306"
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -17,16 +20,17 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - vitalapp_network
-  app:
+
+  tests:
     build:
-      context: . # Construye desde el Dockerfile en este proyecto
-    container_name: vitalapp
-    ports:
-      - "8080:8080"
+      context: .
+    container_name: vitalapp_tests
     depends_on:
-      - db # Espera a que la base de datos esté lista
+      db:
+        condition: service_healthy
     networks:
       - vitalapp_network
+
 volumes:
   db_data:
 

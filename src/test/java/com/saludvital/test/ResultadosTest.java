@@ -51,8 +51,26 @@ public class ResultadosTest {
 
     @Test
     public void listarTodosTest() {
+        // Crear y guardar un paciente válido
+        Paciente paciente = new Paciente();
+        paciente.setNombre("Carlos");
+        paciente.setCorreo("carlos@email.com");
+        paciente.setTelefono("123456789");
+        paciente.setDireccion("Calle 123");
+        paciente = pacienteRepository.save(paciente);
+
+        // Crear y guardar un resultado
+        Resultados resultado = new Resultados();
+        resultado.setDescripcion("Resultado de prueba");
+        resultado.setFechaEntrega(LocalDate.now());
+        resultado.setPaciente(paciente);
+        resultadosRepository.save(resultado);
+
+        // Consultar todos los resultados
         List<Resultados> lista = resultadosRepository.findAll();
 
+        // Verificar que la lista no esté vacía
+        System.out.println("Tamaño de la lista: " + lista.size());
         assertFalse(lista.isEmpty());
     }
 

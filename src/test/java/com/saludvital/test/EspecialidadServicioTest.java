@@ -30,9 +30,17 @@ public class EspecialidadServicioTest {
 
     @Test
     public void listarEspecialidadesTest() {
+        // Crear y guardar una especialidad
+        Especialidad especialidad = new Especialidad();
+        especialidad.setNombre("Pediatría");
+        especialidad.setDescripcion("Especialidad para niños");
+        especialidadServicio.crearEspecialidad(especialidad);
+
+        // Consultar todas las especialidades
         List<Especialidad> lista = especialidadServicio.listarEspecialidades();
 
-        assertNotNull(lista);
+        // Verificar que la lista no esté vacía
+        System.out.println("Tamaño de la lista: " + lista.size());
         assertFalse(lista.isEmpty());
     }
 
