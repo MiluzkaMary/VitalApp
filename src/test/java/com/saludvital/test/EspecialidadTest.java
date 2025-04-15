@@ -31,8 +31,17 @@ public class EspecialidadTest {
 
     @Test
     public void listarTodosTest() {
+        // Crear y guardar una especialidad
+        Especialidad especialidad = new Especialidad();
+        especialidad.setNombre("Pediatría");
+        especialidad.setDescripcion("Especialidad para niños");
+        especialidadRepository.save(especialidad);
+
+        // Consultar todas las especialidades
         List<Especialidad> lista = especialidadRepository.findAll();
 
+        // Verificar que la lista no esté vacía
+        System.out.println("Tamaño de la lista: " + lista.size());
         assertFalse(lista.isEmpty());
     }
 

@@ -1,13 +1,12 @@
-name: CI
+name: CI Pipeline
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     services:
@@ -18,53 +17,31 @@ jobs:
           MYSQL_DATABASE: vitalapp
           MYSQL_USER: custom_user
           MYSQL_PASSWORD: saludvitalpro
+        ports:
+          - 3307:3306
         options: >-
-          --health-cmd="mysqladmin ping -h localhost --silent"
+          --health-cmd="mysqladmin ping -h localhost"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=10
-        
-    
-
+          --health-retries=5
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: temurin
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: temurin
 
-      - name: Install MySQL client
-        run: sudo apt-get update && sudo apt-get install -y mysql-client
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
 
-      - name: Wait for MySQL to be ready
-        run: |
-          for i in {1..60}; do
-            echo "Checking MySQL connection..."
-            if mysqladmin ping -h 127.0.0.1 --silent; then
-              echo "✅ MySQL is ready."
-              break
-            fi
-            echo "❌ MySQL not ready. Retrying..."
-            sleep 5
-          done
-
-      - name: Test database connection
-        run: |
-          echo "Testing connection to MySQL..."
-          mysql -h 127.0.0.1 -u custom_user -psaludvitalpro -e "CREATE DATABASE IF NOT EXISTS test_db; SHOW DATABASES; DROP DATABASE test_db;"
-          echo "✅ Connection successful."
-
-      - name: Check MySQL logs
-        run: docker logs $(docker ps -q --filter "ancestor=mysql:8.0")
-
-      - name: Inspect MySQL container health
-        run: docker inspect --format='{{json .State.Health}}' $(docker ps -q --filter "ancestor=mysql:8.0")
-
-      - name: Run tests
-        env:
-          SPRING_PROFILES_ACTIVE: test
-        run: mvn test
+    - name: Build and test with Maven
+      run: mvn clean test -Dspring.profiles.active=test

@@ -8,4 +8,4 @@ RUN mvn clean package -DskipTests
 FROM maven:3.8.7-eclipse-temurin-17
 WORKDIR /app
 COPY --from=build /app /app
-ENTRYPOINT ["mvn"]
+ENTRYPOINT ["mvn", "test", "-Dspring.profiles.active=test"]

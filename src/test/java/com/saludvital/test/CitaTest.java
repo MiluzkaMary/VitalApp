@@ -95,8 +95,34 @@ public class CitaTest {
 
     @Test
     public void listarTodosTest() {
+        // Crear y guardar un doctor válido
+        Doctor doctor = new Doctor();
+        doctor.setNombre("Dr. Juan");
+        doctor.setCorreo("juan@correo.com");
+        doctor.setTelefono("123456789");
+        doctor = doctorRepository.save(doctor);
+
+        // Crear y guardar un paciente válido
+        Paciente paciente = new Paciente();
+        paciente.setNombre("Camilo");
+        paciente.setCorreo("camilo@email.com");
+        paciente.setTelefono("987654321");
+        paciente.setDireccion("Calle 456");
+        paciente = pacienteRepository.save(paciente);
+
+        // Crear y guardar una cita
+        Cita cita = new Cita();
+        cita.setFechaHora(LocalDateTime.now());
+        cita.setMotivo("Consulta general");
+        cita.setDoctor(doctor);
+        cita.setPaciente(paciente);
+        citaRepository.save(cita);
+
+        // Consultar todas las citas
         List<Cita> lista = citaRepository.findAll();
 
+        // Verificar que la lista no esté vacía
+        System.out.println("Tamaño de la lista: " + lista.size());
         assertFalse(lista.isEmpty());
     }
 

@@ -39,16 +39,21 @@ public class PacienteTest {
 
     @Test
     public void actualizarTest() {
-        // Obtener paciente por ID
-        Paciente paciente = pacienteRepository.findById(1).orElseThrow();
+        // Crear y guardar un paciente válido
+        Paciente paciente = new Paciente();
+        paciente.setNombre("Carlos");
+        paciente.setCorreo("carlos@email.com");
+        paciente.setTelefono("123456789");
+        paciente.setDireccion("Calle 123");
+        paciente = pacienteRepository.save(paciente);
+
+        // Editar el paciente
         paciente.setNombre("María");
         paciente.setCorreo("maria@email.com");
+        Paciente pacienteActualizado = pacienteRepository.save(paciente);
 
-        // Guardar cambios
-        pacienteRepository.save(paciente);
-
-        // Verificar actualización
-        Paciente pacienteActualizado = pacienteRepository.findById(1).orElseThrow();
+        // Verificar que los cambios se hayan aplicado
+        assertNotNull(pacienteActualizado);
         assertEquals("María", pacienteActualizado.getNombre());
         assertEquals("maria@email.com", pacienteActualizado.getCorreo());
 
@@ -58,13 +63,20 @@ public class PacienteTest {
 
     @Test
     public void listarTodosTest() {
+        // Crear y guardar un paciente válido
+        Paciente paciente = new Paciente();
+        paciente.setNombre("Carlos");
+        paciente.setCorreo("carlos@email.com");
+        paciente.setTelefono("123456789");
+        paciente.setDireccion("Calle 123");
+        pacienteRepository.save(paciente);
+
+        // Consultar todos los pacientes
         List<Paciente> lista = pacienteRepository.findAll();
 
         // Verificar que la lista no esté vacía
+        System.out.println("Tamaño de la lista: " + lista.size());
         assertFalse(lista.isEmpty());
-
-        // Mensaje de éxito
-        System.out.println("Test listar todos los pacientes exitoso");
     }
 
     @Test

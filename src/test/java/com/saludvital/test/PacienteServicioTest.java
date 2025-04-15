@@ -36,12 +36,20 @@ public class PacienteServicioTest {
 
     @Test
     public void obtenerPacientePorIdTest() {
+        // Crear y guardar un paciente
+        Paciente paciente = new Paciente();
+        paciente.setNombre("Camilo");
+        paciente.setCorreo("camilo@email.com");
+        paciente.setTelefono("987654321");
+        paciente.setDireccion("Calle 456");
+        Paciente pacienteCreado = pacienteServicio.crearPaciente(paciente);
+
         // Obtener paciente por ID
-        Paciente paciente = pacienteServicio.obtenerPacientePorId(1);
+        Paciente pacienteObtenido = pacienteServicio.obtenerPacientePorId(pacienteCreado.getId());
 
         // Verificar que no sea null
-        assertNotNull(paciente);
-        assertEquals(1, paciente.getId());
+        assertNotNull(pacienteObtenido);
+        assertEquals(pacienteCreado.getId(), pacienteObtenido.getId());
     }
 
     @Test
@@ -54,17 +62,23 @@ public class PacienteServicioTest {
 
     @Test
     public void actualizarPacienteTest() {
-        // Obtener paciente por ID
-        Paciente paciente = pacienteServicio.obtenerPacientePorId(1);
-        paciente.setNombre("Luis");
-        paciente.setCorreo("luis@email.com");
+        // Crear y guardar un paciente válido
+        Paciente paciente = new Paciente();
+        paciente.setNombre("Carlos");
+        paciente.setCorreo("carlos@email.com");
+        paciente.setTelefono("123456789");
+        paciente.setDireccion("Calle 123");
+        Paciente pacienteCreado = pacienteServicio.crearPaciente(paciente);
 
-        // Actualizar paciente
-        Paciente pacienteActualizado = pacienteServicio.actualizarPaciente(paciente);
+        // Editar el paciente
+        pacienteCreado.setNombre("María");
+        pacienteCreado.setCorreo("maria@email.com");
+        Paciente pacienteActualizado = pacienteServicio.actualizarPaciente(pacienteCreado);
 
-        // Verificar actualización
-        assertEquals("Luis", pacienteActualizado.getNombre());
-        assertEquals("luis@email.com", pacienteActualizado.getCorreo());
+        // Verificar que los cambios se hayan aplicado
+        assertNotNull(pacienteActualizado);
+        assertEquals("María", pacienteActualizado.getNombre());
+        assertEquals("maria@email.com", pacienteActualizado.getCorreo());
     }
 
     @Test
