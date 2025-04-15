@@ -5,12 +5,14 @@ import com.saludvital.repositories.PacienteRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class PacienteTest {
 
     @Autowired
@@ -30,6 +32,9 @@ public class PacienteTest {
         // Verificar que no sea null
         assertNotNull(pacienteCreado);
         assertEquals("Carlos", pacienteCreado.getNombre());
+
+        // Mensaje de éxito
+        System.out.println("Test registro paciente exitoso");
     }
 
     @Test
@@ -46,6 +51,9 @@ public class PacienteTest {
         Paciente pacienteActualizado = pacienteRepository.findById(1).orElseThrow();
         assertEquals("María", pacienteActualizado.getNombre());
         assertEquals("maria@email.com", pacienteActualizado.getCorreo());
+
+        // Mensaje de éxito
+        System.out.println("Test actualización paciente exitoso");
     }
 
     @Test
@@ -54,6 +62,9 @@ public class PacienteTest {
 
         // Verificar que la lista no esté vacía
         assertFalse(lista.isEmpty());
+
+        // Mensaje de éxito
+        System.out.println("Test listar todos los pacientes exitoso");
     }
 
     @Test
@@ -64,5 +75,8 @@ public class PacienteTest {
         // Verificar que el paciente fue eliminado
         Paciente pacienteEliminado = pacienteRepository.findById(1).orElse(null);
         assertNull(pacienteEliminado);
+
+        // Mensaje de éxito
+        System.out.println("Test eliminación paciente exitoso");
     }
 }
