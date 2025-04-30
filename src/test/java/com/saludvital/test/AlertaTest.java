@@ -49,7 +49,7 @@ public class AlertaTest {
         // Crear y guardar la alerta
         Alerta alerta = new Alerta();
         alerta.setMensaje("Alerta de prueba");
-        alerta.setTipoAlerta("Urgente");
+        alerta.setTipoAlerta("Innecesario");
         alerta.setFechaHora(LocalDateTime.now());
         alerta.setDoctor(doctor); // Asignar el doctor creado
         alerta.setPaciente(paciente); // Asignar el paciente creado
