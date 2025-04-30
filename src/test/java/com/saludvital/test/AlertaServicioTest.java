@@ -9,6 +9,7 @@ import com.saludvital.services.interfaces.PacienteServicio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class AlertaServicioTest {
 
     @Autowired
@@ -96,7 +98,6 @@ public class AlertaServicioTest {
         assertEquals("Urgente", alertaEditada.getTipoAlerta());
     }
 
-    //aqui arriba
 
     @Test
     public void listarAlertasTest() {

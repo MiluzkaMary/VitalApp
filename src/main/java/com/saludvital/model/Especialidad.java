@@ -3,7 +3,9 @@ package com.saludvital.model;
     import jakarta.persistence.*;
     import lombok.*;
 
-    @Entity
+    import java.util.List;
+
+@Entity
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
@@ -19,4 +21,7 @@ package com.saludvital.model;
 
         private String nombre;
         private String descripcion;
+
+        @OneToMany(mappedBy = "especialidad", cascade = CascadeType.ALL, orphanRemoval = true)
+        private List<Doctor> doctores;
     }

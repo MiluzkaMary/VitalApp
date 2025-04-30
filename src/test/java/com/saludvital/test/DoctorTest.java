@@ -7,12 +7,14 @@ import com.saludvital.repositories.EspecialidadRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class DoctorTest {
 
     @Autowired
@@ -70,9 +72,19 @@ public class DoctorTest {
 
     @Test
     public void listarTodosTest() {
-        List<Doctor> lista = doctorRepository.findAll();
+        // Agregar un doctor de prueba
+        Doctor doctor = new Doctor();
+        doctor.setNombre("Dr. Test");
+        doctor.setCorreo("test@correo.com");
+        doctor.setTelefono("123456789");
+        doctorRepository.save(doctor);
 
+        // Verificar que la lista no esté vacía
+        List<Doctor> lista = doctorRepository.findAll();
         assertFalse(lista.isEmpty());
+
+        // Opcional: imprimir los registros en consola
+        lista.forEach(System.out::println);
     }
 
     @Test

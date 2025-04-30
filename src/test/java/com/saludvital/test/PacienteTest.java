@@ -24,7 +24,7 @@ public class PacienteTest {
         paciente.setNombre("Carlos");
         paciente.setCorreo("carlos@email.com");
         paciente.setTelefono("123456789");
-        paciente.setDireccion("Calle 123");
+        paciente.setDireccion("Armenia Quindio");
 
         // Guardar
         Paciente pacienteCreado = pacienteRepository.save(paciente);
