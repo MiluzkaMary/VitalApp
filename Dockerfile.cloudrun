@@ -1,15 +1,6 @@
-# Dockerfile.cloudrun
-# Build stage
-FROM maven:3.8.7-eclipse-temurin-17 AS build
+FROM python:3.9-slim
 WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY src ./src
-RUN mvn clean package -DskipTests
-
-# Runtime stage
-FROM eclipse-temurin:17-jre
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+RUN pip install flask
+COPY app.py .
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["python", "app.py"]
