@@ -1,0 +1,24 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/appvital:$SHORT_SHA', '-f', 'Dockerfile.cloudrun', '.']
+    id: Build
+  # Push the image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/appvital:$SHORT_SHA']
+    id: Push
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'appvital'
+      - '--image=gcr.io/$PROJECT_ID/appvital:$SHORT_SHA'
+      - '--region=us-central1'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars=PORT=8080'
+    entrypoint: 'gcloud'
+    id: Deploy
+images:
+  - 'gcr.io/$PROJECT_ID/appvital:$SHORT_SHA'
