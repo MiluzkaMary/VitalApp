@@ -33,7 +33,7 @@ public class CitaTest {
     public void registrarTest() {
         // Crear y guardar un doctor válido
         Doctor doctor = new Doctor();
-        doctor.setNombre("Dr. Juan");
+        doctor.setNombre("Dr. Jose");
         doctor.setCorreo("juan@correo.com");
         doctor.setTelefono("123456789");
         doctor = doctorRepository.save(doctor);
