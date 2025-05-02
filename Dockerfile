@@ -1,11 +1,6 @@
-FROM maven:3.8.7-eclipse-temurin-17 AS build
+FROM python:3.9-slim
 WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY src ./src
-RUN mvn clean package -DskipTests
-
-FROM maven:3.8.7-eclipse-temurin-17
-WORKDIR /app
-COPY --from=build /app /app
-ENTRYPOINT ["mvn", "test", "-Dspring.profiles.active=test"]
+RUN pip install flask
+COPY app.py .
+EXPOSE 8080
+CMD ["python", "app.py"]

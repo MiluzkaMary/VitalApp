@@ -18,6 +18,8 @@ steps:
       - '--platform=managed'
       - '--allow-unauthenticated'
       - '--set-env-vars=PORT=8080'
+      - '--timeout=300'
+      - '--startup-cpu-boost'
     entrypoint: 'gcloud'
     id: Deploy
 images:
