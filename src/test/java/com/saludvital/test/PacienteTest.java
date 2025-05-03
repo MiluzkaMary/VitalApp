@@ -21,7 +21,7 @@ public class PacienteTest {
     @Test
     public void registrarTest() {
         Paciente paciente = new Paciente();
-        paciente.setNombre("Carlos");
+        paciente.setNombre("Roberto");
         paciente.setCorreo("carlos@email.com");
         paciente.setTelefono("123456789");
         paciente.setDireccion("Armenia Quindio");
