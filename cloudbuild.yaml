@@ -17,7 +17,6 @@ steps:
       - '--region=us-central1'
       - '--platform=managed'
       - '--allow-unauthenticated'
-      - '--set-env-vars=PORT=8080'
       - '--timeout=300'
       - '--cpu-boost'
     entrypoint: 'gcloud'
