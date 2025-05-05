@@ -21,7 +21,7 @@ public class EspecialidadServicioTest {
     @Test
     public void crearEspecialidadTest() {
         Especialidad especialidad = new Especialidad();
-        especialidad.setNombre("Cardiología");
+        especialidad.setNombre("Pediatria");
         especialidad.setDescripcion("Especialidad del corazón");
 
         Especialidad especialidadCreada = especialidadServicio.crearEspecialidad(especialidad);
